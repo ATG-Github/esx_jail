@@ -108,37 +108,41 @@ AddEventHandler('esx_jail:sendToJail', function(t, q)
 	local src, tgt = source, t;
 	local qty = q;
 
-	local legit = checkIfLegit(src, tgt);
-	if legit["legit"] == true then
-		local xSrc, xTgt = ESX.GetPlayerFromId(src), ESX.GetPlayerFromId(tgt);
-		local srcIdent, tgtIdent = xSrc.identifier, xTgt.identifier;
+	if src ~= nil and tgt ~= nil then
+		local legit = checkIfLegit(src, tgt);
+		if legit["legit"] == true then
+			local xSrc, xTgt = ESX.GetPlayerFromId(src), ESX.GetPlayerFromId(tgt);
+			if xSrc ~= nil and xTgt ~= nil then
+				local srcIdent, tgtIdent = xSrc.identifier, xTgt.identifier;
 
-		MySQL.Async.fetchAll('SELECT * FROM jail WHERE identifier = @identifier', {
-			['@identifier'] = tgtIdent
-		}, function(result)
-			if result[1] then
-				MySQL.Async.execute('UPDATE jail SET jail_time = @jail_time WHERE identifier = @identifier', {
-					['@identifier'] = tgtIdent,
-					['@jail_time'] = jailTime
-				})
-			else
-				MySQL.Async.execute('INSERT INTO jail (identifier, jail_time) VALUES (@identifier, @jail_time)', {
-					['@identifier'] = tgtIdent,
-					['@jail_time'] = jailTime
-				})
+				MySQL.Async.fetchAll('SELECT * FROM jail WHERE identifier = @identifier', {
+					['@identifier'] = tgtIdent
+				}, function(result)
+					if result[1] then
+						MySQL.Async.execute('UPDATE jail SET jail_time = @jail_time WHERE identifier = @identifier', {
+							['@identifier'] = tgtIdent,
+							['@jail_time'] = jailTime
+						})
+					else
+						MySQL.Async.execute('INSERT INTO jail (identifier, jail_time) VALUES (@identifier, @jail_time)', {
+							['@identifier'] = tgtIdent,
+							['@jail_time'] = jailTime
+						})
+					end
+				end)
+				
+				TriggerClientEvent('chat:addMessage', -1, { args = { _U('judge'), _U('jailed_msg', GetPlayerName(tgt), ESX.Math.Round(jailTime / 60)) }, color = { 147, 196, 109 } })
+				TriggerClientEvent('esx_policejob:unrestrain', tgt)
+				TriggerClientEvent('esx_jail:jail', tgt, jailTime)
 			end
-		end)
-		
-		TriggerClientEvent('chat:addMessage', -1, { args = { _U('judge'), _U('jailed_msg', GetPlayerName(tgt), ESX.Math.Round(jailTime / 60)) }, color = { 147, 196, 109 } })
-		TriggerClientEvent('esx_policejob:unrestrain', tgt)
-		TriggerClientEvent('esx_jail:jail', tgt, jailTime)
-	else
-		print(
-			string.format(
-				"^2%s^7 -> [^1%s^7] ^1%s^7 has attempted to remove [^5%s^7] ^5%s^7 from jail via the ^2sendToJail^7 event. The legitimacy check returned ^1false^7 with the reason of ^2%s^7.",
-				GetCurrentResourceName(), src, GetPlayerName(src), tgt, GetPlayerName(tgt), legit["reason"]
+		else
+			print(
+				string.format(
+					"^2%s^7 -> [^1%s^7] ^1%s^7 has attempted to remove [^5%s^7] ^5%s^7 from jail via the ^2sendToJail^7 event. The legitimacy check returned ^1false^7 with the reason of ^2%s^7.",
+					GetCurrentResourceName(), src, GetPlayerName(src), tgt, GetPlayerName(tgt), legit["reason"]
+				)
 			)
-		)
+		end
 	end
 end)
 
