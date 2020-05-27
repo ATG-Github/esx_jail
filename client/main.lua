@@ -1,3 +1,8 @@
+-- ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= --
+--		   Created By: ElPumpo AKA Hawaii_Beach		      --
+--			 Protected By: ATG-Github AKA ATG			  --
+-- ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= --
+
 local isInJail, unjail = false, false
 local jailTime, fastTimer = 0, 0
 ESX = nil
