@@ -1,12 +1,11 @@
+# Security
+Tired of hackers putting your players in jail? Install this updated version with protected server events!
+- [Security FiveM Forum Thread](https://forum.cfx.re/t/re-release-esx-security-patches-updates-jail-qalle-jail-communityservice/1292760)
+
 # esx_jail
 
 Let cops jail people!
-
-- [Security FiveM Forum Thread]()
 - [Original FiveM Forum thread](https://forum.fivem.net/t/release-esx-jailer/82896)
-
-# Security
-Tired of hackers putting your players in jail? Install this updated version with protected server events!
 
 # Features
 
