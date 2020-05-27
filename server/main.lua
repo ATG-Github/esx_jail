@@ -12,34 +12,50 @@ function checkIfLegit(source, target)
 	--				Let's grab our data...					  --
 	-- ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= --
 	local src, tgt = source, target;
-	local xSrc, xTgt = ESX.GetPlayerFromId(src), ESX.GetPlayerFromId(tgt);
-	local srcIdent, tgtIdent = xSrc.identifier, xTgt.identifier;
-	local srcJob = xSrc.job.name;
-	local tgtJob = xTgt.job.name;
-	local srcGroup = xSrc.getGroup();
-	-- ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= --
-	--				Let's define legitimacy...			      --
-	-- ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= --
-	local legit = {
-		["legit"] = true,
-		["reason"] = "No flags found."
-	};
-	-- ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= --
-	--				Let's test for legitimacy!			      --
-	-- ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= --
-	if srcJob ~= "police" then
-		if srcGroup ~= "admin" and srcGroup ~= "superadmin" then
+	if src ~= nil and tgt ~= nil then
+		local xSrc, xTgt = ESX.GetPlayerFromId(src), ESX.GetPlayerFromId(tgt);
+		if xSrc ~= nil and xTgt ~= nil then
+			local srcIdent, tgtIdent = xSrc.identifier, xTgt.identifier;
+			local srcJob = xSrc.job.name;
+			local tgtJob = xTgt.job.name;
+			local srcGroup = xSrc.getGroup();
+			-- ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= --
+			--				Let's define legitimacy...			      --
+			-- ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= --
+			local legit = {
+				["legit"] = true,
+				["reason"] = "No flags found."
+			};
+			-- ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= --
+			--				Let's test for legitimacy!			      --
+			-- ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= --
+			if srcJob ~= "police" then
+				if srcGroup ~= "admin" and srcGroup ~= "superadmin" then
+					legit = {
+						["legit"] = false,
+						["reason"] = "Source does not have the police job, and is not staff."
+					}
+					return legit
+				end
+			end
+			-- ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= --
+			--		     If we've made it here, it's legit!           --
+			-- ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= --
+			return legit
+		else
 			legit = {
 				["legit"] = false,
-				["reason"] = "Source does not have the police job, and is not staff."
+				["reason"] = "xSrc or xTgt == nil."
 			}
 			return legit
 		end
+	else
+		legit = {
+			["legit"] = false,
+			["reason"] = "Source or Target == nil."
+		}
+		return legit
 	end
-	-- ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= --
-	--		     If we've made it here, it's legit!           --
-	-- ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~= --
-	return legit
 end
 
 -- jail command
