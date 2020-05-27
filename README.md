@@ -2,7 +2,10 @@
 
 Let cops jail people!
 
-- [FiveM Forum thread](https://forum.fivem.net/t/release-esx-jailer/82896)
+- [Original FiveM Forum thread](https://forum.fivem.net/t/release-esx-jailer/82896)
+
+# Security
+Tired of hackers putting your players in community service? Install this updated version with protected server events!
 
 # Features
 
